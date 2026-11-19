@@ -1,0 +1,67 @@
+@import '@fontsource-variable/manrope';
+
+:root {
+  --page: #08090d;
+  --panel: #11131a;
+  --ink: #f2f2ee;
+  --soft: #b8bbc3;
+  --muted: #8c909b;
+  --line: rgb(255 255 255 / 0.13);
+  --cyan: #15b8be;
+  --coral: #f36552;
+  --radius: 0.9rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color: var(--ink);
+  background: var(--page);
+  font-family: 'Manrope Variable', 'Segoe UI', sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--page);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100dvh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 0 35%, rgb(21 184 190 / 0.07), transparent 20rem),
+    radial-gradient(circle at 100% 68%, rgb(243 101 82 / 0.06), transparent 24rem),
+    var(--page);
+}
+
+body,
+button,
+a {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #80e5e1;
+  outline-offset: 4px;
+}
+
+::selection {
+  color: #090a0e;
+  background: #a3eeea;
+}
