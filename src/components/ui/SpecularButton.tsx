@@ -6,6 +6,8 @@ import {
   type ReactNode,
 } from 'react'
 
+import { cn } from '@/lib/utils'
+
 const SIZES = {
   sm: 'px-5 py-2.5 text-[0.875rem]',
   md: 'px-7 py-3.5 text-[1rem]',
@@ -565,7 +567,7 @@ const SpecularButton = ({
       type={type}
       disabled={disabled}
       onClick={onClick}
-      className={`${BUTTON} ${SIZES[size] ?? SIZES.lg}${className ? ` ${className}` : ''}`}
+      className={cn(BUTTON, SIZES[size] ?? SIZES.lg, className)}
       style={buttonStyle}
       {...rest}
     >

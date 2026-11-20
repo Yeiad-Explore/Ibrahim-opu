@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
+import CaseStudyLoop from '@/components/CaseStudyLoop'
 import GlassmorphismProfileCard from '@/components/ui/glassmorphism-profile-card'
 import SpecularButton from '@/components/ui/SpecularButton'
 import './App.css'
@@ -71,6 +72,33 @@ const tools = [
   'Canva',
   'MS Excel',
   'Google Workspace',
+]
+
+const caseStudies = [
+  {
+    id: 'meta-ads',
+    index: '01',
+    channel: 'Meta Ads',
+    title: 'Audience to conversion classroom',
+    summary:
+      'A teaching loop that walks through Meta campaign setup, audience targeting and creative testing as learners would run it.',
+    focus: ['Audience targeting', 'Campaign structure', 'Creative testing'],
+    webm: '/case-studies/case-study-meta-ads.webm',
+    mp4: '/case-studies/case-study-meta-ads.mp4',
+    poster: '/case-studies/case-study-meta-ads.jpg',
+  },
+  {
+    id: 'google-ads',
+    index: '02',
+    channel: 'Google Ads',
+    title: 'Search intent made practical',
+    summary:
+      'A looped walkthrough of search campaign thinking — keywords, intent and structure — built for classroom clarity.',
+    focus: ['Search intent', 'Keyword grouping', 'Account clarity'],
+    webm: '/case-studies/case-study-google-ads.webm',
+    mp4: '/case-studies/case-study-google-ads.mp4',
+    poster: '/case-studies/case-study-google-ads.jpg',
+  },
 ]
 
 function App() {
@@ -252,6 +280,45 @@ function App() {
             },
           })
 
+          gsap.from('.case-studies__intro > *', {
+            autoAlpha: 0,
+            y: 40,
+            duration: 1,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.case-studies',
+              start: 'top 78%',
+              once: true,
+            },
+          })
+
+          gsap.utils.toArray<HTMLElement>('.case-study').forEach((study) => {
+            gsap.from(study.querySelectorAll('.case-study__stage, .case-study__copy > *'), {
+              autoAlpha: 0,
+              y: 48,
+              duration: 1.05,
+              stagger: 0.08,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: study,
+                start: 'top 78%',
+                once: true,
+              },
+            })
+
+            gsap.to(study.querySelector('.case-study__stage'), {
+              yPercent: desktop ? -6 : -3,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: study,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1.15,
+              },
+            })
+          })
+
           gsap.from('.section__heading > *', {
             autoAlpha: 0,
             y: 42,
@@ -395,13 +462,16 @@ function App() {
           Ibrahim<span>.</span>
         </a>
         <nav aria-label="Main navigation">
-          <a href="#profile">Profile</a>
+          <a href="#case-studies">Case studies</a>
           <a href="#experience">Experience</a>
           <a href="#expertise">Expertise</a>
           <a href="#contact">Contact</a>
         </nav>
         <a className="header-contact" href="mailto:musa24bd@gmail.com">
-          Email Ibrahim
+          <span className="header-contact__label">Email</span>
+          <span className="header-contact__name" aria-hidden="true">
+            Ibrahim
+          </span>
         </a>
       </header>
 
@@ -446,6 +516,7 @@ function App() {
                 glow={1}
                 followMouse
                 proximity={250}
+                className="hero__cta"
                 onClick={scrollToExperience}
               >
                 View experience
@@ -467,6 +538,7 @@ function App() {
                 glow={1}
                 followMouse
                 proximity={250}
+                className="hero__cta"
                 onClick={downloadCv}
               >
                 Download CV
@@ -509,6 +581,47 @@ function App() {
               statusColor="bg-lime-500"
               glowText="Currently High on Creativity"
             />
+          </div>
+        </section>
+
+        <section className="case-studies" id="case-studies" aria-labelledby="case-studies-title">
+          <div className="case-studies__intro">
+            <p className="section__kicker">Case studies</p>
+            <h2 id="case-studies-title">Campaign lessons, looping in motion.</h2>
+            <p>
+              Short silent loops that show how Ibrahim teaches Meta and Google
+              Ads — structure, targeting and classroom clarity without the
+              slide deck.
+            </p>
+          </div>
+
+          <div className="case-studies__list">
+            {caseStudies.map((study, index) => (
+              <article
+                className={`case-study${index % 2 === 1 ? ' case-study--flip' : ''}`}
+                key={study.id}
+              >
+                <CaseStudyLoop
+                  webm={study.webm}
+                  mp4={study.mp4}
+                  poster={study.poster}
+                  title={study.title}
+                />
+                <div className="case-study__copy">
+                  <p className="case-study__index">
+                    <span>{study.index}</span>
+                    <span>{study.channel}</span>
+                  </p>
+                  <h3>{study.title}</h3>
+                  <p>{study.summary}</p>
+                  <ul aria-label={`${study.channel} focus areas`}>
+                    {study.focus.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
           </div>
         </section>
 

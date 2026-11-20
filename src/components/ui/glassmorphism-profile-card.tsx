@@ -104,10 +104,10 @@ export default function Component({
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
             <SpecularButton
-              size="md"
-              radius={18}
+              size="sm"
+              radius={999}
               tint="#ffffff"
               tintOpacity={0.06}
               blur={6}
@@ -122,17 +122,17 @@ export default function Component({
               glow={1}
               followMouse
               proximity={220}
-              className="w-full"
+              className="!px-4 !py-2.5 !text-[0.8rem]"
               onClick={() => {
                 window.location.href = `mailto:${email}`
               }}
             >
-              <Plus className="h-4 w-4" /> Hire Me
+              <Plus className="h-3.5 w-3.5" /> Hire Me
             </SpecularButton>
 
             <SpecularButton
-              size="md"
-              radius={18}
+              size="sm"
+              radius={999}
               tint="#ffffff"
               tintOpacity={0.06}
               blur={6}
@@ -147,10 +147,11 @@ export default function Component({
               glow={1}
               followMouse
               proximity={220}
-              className="w-full"
+              className="!px-4 !py-2.5 !text-[0.8rem]"
               onClick={handleCopy}
             >
-              <Copy className="h-4 w-4" /> {copied ? 'Copied' : 'Copy Email'}
+              <Copy className="h-3.5 w-3.5" />{' '}
+              {copied ? 'Copied' : 'Copy Email'}
             </SpecularButton>
           </div>
         </CardContent>
