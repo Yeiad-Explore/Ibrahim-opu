@@ -1,4 +1,12 @@
+import { useEffect, useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import Lenis from 'lenis'
+import 'lenis/dist/lenis.css'
 import './App.css'
+
+gsap.registerPlugin(useGSAP, ScrollTrigger)
 
 const experience = [
   {
@@ -64,8 +72,288 @@ const tools = [
 ]
 
 function App() {
+  const page = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const lenis = new Lenis({
+      autoRaf: false,
+      duration: 1.15,
+      smoothWheel: true,
+      syncTouch: false,
+      wheelMultiplier: 0.88,
+      touchMultiplier: 1,
+    })
+
+    const updateScrollTrigger = () => ScrollTrigger.update()
+    const updateLenis = (time: number) => lenis.raf(time * 1000)
+
+    lenis.on('scroll', updateScrollTrigger)
+    gsap.ticker.add(updateLenis)
+    gsap.ticker.lagSmoothing(0)
+
+    const anchorHandlers = new Map<HTMLAnchorElement, (event: MouseEvent) => void>()
+
+    page.current?.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
+      const handler = (event: MouseEvent) => {
+        const target = anchor.getAttribute('href')
+        if (!target) return
+
+        event.preventDefault()
+        window.history.pushState(null, '', target)
+        lenis.scrollTo(target, {
+          duration: 1.35,
+          easing: (value) => 1 - Math.pow(1 - value, 4),
+        })
+      }
+
+      anchor.addEventListener('click', handler)
+      anchorHandlers.set(anchor, handler)
+    })
+
+    document.fonts.ready.then(() => ScrollTrigger.refresh())
+
+    return () => {
+      anchorHandlers.forEach((handler, anchor) => {
+        anchor.removeEventListener('click', handler)
+      })
+      lenis.off('scroll', updateScrollTrigger)
+      gsap.ticker.remove(updateLenis)
+      gsap.ticker.lagSmoothing(500, 33)
+      lenis.destroy()
+    }
+  }, [])
+
+  useGSAP(
+    () => {
+      const motion = gsap.matchMedia()
+
+      motion.add(
+        {
+          motionOK: '(prefers-reduced-motion: no-preference)',
+          desktop: '(min-width: 721px)',
+        },
+        (context) => {
+          const { motionOK, desktop } = context.conditions as {
+            motionOK: boolean
+            desktop: boolean
+          }
+
+          if (!motionOK) return
+
+          const intro = gsap.timeline({
+            defaults: { ease: 'power4.out' },
+          })
+
+          intro
+            .from('.site-header', {
+              autoAlpha: 0,
+              y: -14,
+              duration: 0.9,
+            })
+            .from(
+              '.hero__eyebrow',
+              {
+                autoAlpha: 0,
+                y: 14,
+                duration: 0.7,
+              },
+              '-=0.5',
+            )
+            .from(
+              '.hero h1 span',
+              {
+                autoAlpha: 0,
+                yPercent: 55,
+                duration: 1.15,
+                stagger: 0.09,
+              },
+              '-=0.5',
+            )
+            .from(
+              ['.hero__intro', '.hero__actions'],
+              {
+                autoAlpha: 0,
+                y: 22,
+                duration: 0.85,
+                stagger: 0.12,
+              },
+              '-=0.68',
+            )
+            .from(
+              '.hero__facts > div',
+              {
+                autoAlpha: 0,
+                y: 18,
+                duration: 0.72,
+                stagger: 0.07,
+              },
+              '-=0.48',
+            )
+
+          gsap.to('.hero__art', {
+            yPercent: desktop ? 16 : 8,
+            scale: desktop ? 1.08 : 1.04,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.hero',
+              start: 'top top',
+              end: 'bottom top',
+              scrub: 1.2,
+            },
+          })
+
+          gsap.to('.hero__content', {
+            yPercent: desktop ? 13 : 6,
+            autoAlpha: 0.18,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.hero',
+              start: 'top top',
+              end: '85% top',
+              scrub: 1,
+            },
+          })
+
+          gsap.from('.section__heading > *', {
+            autoAlpha: 0,
+            y: 42,
+            duration: 1.05,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.section__heading',
+              start: 'top 78%',
+              once: true,
+            },
+          })
+
+          gsap.from('.capability', {
+            autoAlpha: 0,
+            y: 64,
+            duration: 1.1,
+            stagger: 0.11,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.capability-grid',
+              start: 'top 80%',
+              once: true,
+            },
+          })
+
+          gsap.from('.experience__intro > *', {
+            autoAlpha: 0,
+            y: 38,
+            duration: 1,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.experience',
+              start: 'top 72%',
+              once: true,
+            },
+          })
+
+          gsap.from('.experience__item', {
+            autoAlpha: 0,
+            y: 44,
+            duration: 1,
+            stagger: 0.13,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.experience__list',
+              start: 'top 76%',
+              once: true,
+            },
+          })
+
+          gsap.from('.expertise', {
+            autoAlpha: 0,
+            scale: 0.965,
+            duration: 1.25,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.expertise',
+              start: 'top 82%',
+              once: true,
+            },
+          })
+
+          gsap.from('.expertise__copy > *, .tool-list', {
+            autoAlpha: 0,
+            x: desktop ? 42 : 0,
+            y: desktop ? 0 : 28,
+            duration: 1,
+            stagger: 0.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.expertise',
+              start: 'top 68%',
+              once: true,
+            },
+          })
+
+          gsap.to('.expertise__visual', {
+            yPercent: desktop ? -9 : -4,
+            rotation: desktop ? 6 : 3,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.expertise',
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.25,
+            },
+          })
+
+          gsap.from('.education > div', {
+            autoAlpha: 0,
+            y: 42,
+            duration: 1.05,
+            stagger: 0.14,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.education',
+              start: 'top 76%',
+              once: true,
+            },
+          })
+
+          gsap.to('.contact__shape', {
+            yPercent: -24,
+            rotation: 34,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.contact',
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1.1,
+            },
+          })
+
+          gsap.from('.contact > p, .contact h2, .contact__actions', {
+            autoAlpha: 0,
+            y: 46,
+            duration: 1.05,
+            stagger: 0.12,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.contact',
+              start: 'top 76%',
+              once: true,
+            },
+          })
+        },
+        page.current ?? undefined,
+      )
+
+      return () => motion.revert()
+    },
+    { scope: page },
+  )
+
   return (
-    <div className="site-shell">
+    <div className="site-shell" ref={page}>
       <header className="site-header">
         <a className="wordmark" href="#top" aria-label="Ibrahim Bin Akther, home">
           Ibrahim<span>.</span>
@@ -96,7 +384,7 @@ function App() {
               Digital marketing / Operations / Customer experience
             </p>
             <h1 id="hero-title">
-              Ibrahim
+              <span>Ibrahim</span>
               <span>Bin Akther</span>
             </h1>
             <p className="hero__intro">
@@ -105,14 +393,14 @@ function App() {
             </p>
             <div className="hero__actions">
               <a className="button button--solid" href="#experience">
-                View experience
+                <span>View experience</span>
               </a>
               <a
                 className="button button--ghost"
                 href="/ibrahim-bin-akther-cv.pdf"
                 download
               >
-                Download CV
+                <span>Download CV</span>
               </a>
             </div>
           </div>
@@ -238,6 +526,7 @@ function App() {
         </section>
 
         <section className="contact section" id="contact">
+          <div className="contact__shape" aria-hidden="true" />
           <p>Start a conversation</p>
           <h2>Good work begins with a clear message.</h2>
           <div className="contact__actions">
