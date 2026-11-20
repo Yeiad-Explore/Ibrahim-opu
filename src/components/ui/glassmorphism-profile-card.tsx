@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Clock, Copy, Plus, Zap } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
+import SpecularButton from '@/components/ui/SpecularButton'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
@@ -105,24 +105,53 @@ export default function Component({
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Button
-              asChild
-              variant="outline"
-              className="h-12 justify-start gap-3 rounded-2xl bg-white/50 hover:bg-white/15"
+            <SpecularButton
+              size="md"
+              radius={18}
+              tint="#ffffff"
+              tintOpacity={0.06}
+              blur={6}
+              textColor="#f5f5f5"
+              lineColor="#b8efec"
+              baseColor="#525252"
+              intensity={1}
+              idleIntensity={0.35}
+              shineSize={10}
+              shineFade={34}
+              thickness={1.2}
+              glow={1}
+              followMouse
+              proximity={220}
+              className="w-full"
+              onClick={() => {
+                window.location.href = `mailto:${email}`
+              }}
             >
-              <a href={`mailto:${email}`}>
-                <Plus className="h-4 w-4" /> Hire Me
-              </a>
-            </Button>
+              <Plus className="h-4 w-4" /> Hire Me
+            </SpecularButton>
 
-            <Button
-              type="button"
-              variant="outline"
+            <SpecularButton
+              size="md"
+              radius={18}
+              tint="#ffffff"
+              tintOpacity={0.06}
+              blur={6}
+              textColor="#f5f5f5"
+              lineColor="#ffffff"
+              baseColor="#525252"
+              intensity={1}
+              idleIntensity={0.35}
+              shineSize={10}
+              shineFade={34}
+              thickness={1.2}
+              glow={1}
+              followMouse
+              proximity={220}
+              className="w-full"
               onClick={handleCopy}
-              className="h-12 justify-start gap-3 rounded-2xl bg-white/50 hover:bg-white/15"
             >
               <Copy className="h-4 w-4" /> {copied ? 'Copied' : 'Copy Email'}
-            </Button>
+            </SpecularButton>
           </div>
         </CardContent>
       </Card>

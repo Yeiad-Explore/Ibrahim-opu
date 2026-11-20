@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import GlassmorphismProfileCard from '@/components/ui/glassmorphism-profile-card'
+import SpecularButton from '@/components/ui/SpecularButton'
 import './App.css'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
@@ -74,6 +75,7 @@ const tools = [
 
 function App() {
   const page = useRef<HTMLDivElement>(null)
+  const lenisRef = useRef<Lenis | null>(null)
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -86,6 +88,7 @@ function App() {
       wheelMultiplier: 0.88,
       touchMultiplier: 1,
     })
+    lenisRef.current = lenis
 
     const updateScrollTrigger = () => ScrollTrigger.update()
     const updateLenis = (time: number) => lenis.raf(time * 1000)
@@ -123,8 +126,28 @@ function App() {
       gsap.ticker.remove(updateLenis)
       gsap.ticker.lagSmoothing(500, 33)
       lenis.destroy()
+      lenisRef.current = null
     }
   }, [])
+
+  const scrollToExperience = () => {
+    window.history.pushState(null, '', '#experience')
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo('#experience', {
+        duration: 1.35,
+        easing: (value) => 1 - Math.pow(1 - value, 4),
+      })
+      return
+    }
+    document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const downloadCv = () => {
+    const link = document.createElement('a')
+    link.href = '/ibrahim-bin-akther-cv.pdf'
+    link.download = 'ibrahim-bin-akther-cv.pdf'
+    link.click()
+  }
 
   useGSAP(
     () => {
@@ -406,16 +429,48 @@ function App() {
               needs into clear action.
             </p>
             <div className="hero__actions">
-              <a className="button button--solid" href="#experience">
-                <span>View experience</span>
-              </a>
-              <a
-                className="button button--ghost"
-                href="/ibrahim-bin-akther-cv.pdf"
-                download
+              <SpecularButton
+                size="lg"
+                radius={999}
+                tint="#ffffff"
+                tintOpacity={0.08}
+                blur={8}
+                textColor="#f2f2ee"
+                lineColor="#b8efec"
+                baseColor="#525252"
+                intensity={1}
+                idleIntensity={0.4}
+                shineSize={10}
+                shineFade={34}
+                thickness={1.2}
+                glow={1}
+                followMouse
+                proximity={250}
+                onClick={scrollToExperience}
               >
-                <span>Download CV</span>
-              </a>
+                View experience
+              </SpecularButton>
+              <SpecularButton
+                size="lg"
+                radius={999}
+                tint="#b8efec"
+                tintOpacity={0.12}
+                blur={8}
+                textColor="#f2f2ee"
+                lineColor="#ffffff"
+                baseColor="#525252"
+                intensity={1}
+                idleIntensity={0.35}
+                shineSize={10}
+                shineFade={34}
+                thickness={1.2}
+                glow={1}
+                followMouse
+                proximity={250}
+                onClick={downloadCv}
+              >
+                Download CV
+              </SpecularButton>
             </div>
           </div>
 
