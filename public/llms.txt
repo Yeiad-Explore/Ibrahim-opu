@@ -4,7 +4,7 @@
 
 ## Primary page
 
-- [Portfolio](https://ibrahimopu.vercel.app/): Profile, professional experience, expertise, tools, education and contact details.
+- [Portfolio](https://ibrahimopu.vercel.app/): Profile card, professional experience, expertise, tools, education and contact details.
 
 ## Professional focus
 

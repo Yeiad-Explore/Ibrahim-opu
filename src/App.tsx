@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
+import GlassmorphismProfileCard from '@/components/ui/glassmorphism-profile-card'
 import './App.css'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
@@ -216,6 +217,18 @@ function App() {
             },
           })
 
+          gsap.from('.profile-card-band__card', {
+            autoAlpha: 0,
+            y: 56,
+            duration: 1.1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.profile-card-band',
+              start: 'top 78%',
+              once: true,
+            },
+          })
+
           gsap.from('.section__heading > *', {
             autoAlpha: 0,
             y: 42,
@@ -362,6 +375,7 @@ function App() {
           <a href="#profile">Profile</a>
           <a href="#experience">Experience</a>
           <a href="#expertise">Expertise</a>
+          <a href="#contact">Contact</a>
         </nav>
         <a className="header-contact" href="mailto:musa24bd@gmail.com">
           Email Ibrahim
@@ -423,6 +437,24 @@ function App() {
               <dd>Bangla and English</dd>
             </div>
           </dl>
+        </section>
+
+        <section
+          className="profile-card-band"
+          id="card"
+          aria-label="Profile card"
+        >
+          <div className="profile-card-band__card">
+            <GlassmorphismProfileCard
+              name="Ibrahim Bin Akther"
+              role="Digital Marketing Instructor"
+              email="musa24bd@gmail.com"
+              avatarSrc="/enhanced_photo.jpg"
+              statusText="Available for work"
+              statusColor="bg-lime-500"
+              glowText="Currently High on Creativity"
+            />
+          </div>
         </section>
 
         <section className="profile section" id="profile">
