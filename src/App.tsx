@@ -6,6 +6,7 @@ import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import CaseStudyLoop from '@/components/CaseStudyLoop'
 import GlassmorphismProfileCard from '@/components/ui/glassmorphism-profile-card'
+import MagicBento from '@/components/ui/MagicBento'
 import SpecularButton from '@/components/ui/SpecularButton'
 import './App.css'
 
@@ -41,26 +42,58 @@ const experience = [
   },
 ]
 
-const capabilities = [
+const capabilityItems = [
   {
+    id: 'campaign-craft',
+    label: 'Marketing',
     title: 'Campaign craft',
-    body: 'Facebook Ads setup, audience targeting and practical online strategy.',
-    className: 'capability capability--wide',
+    description:
+      'Facebook Ads setup, audience targeting and practical online strategy.',
+    visual: 'analytics',
   },
   {
+    id: 'search-clarity',
+    label: 'SEO',
     title: 'Search clarity',
-    body: 'SEO instruction and content planning grounded in usable workflows.',
-    className: 'capability',
+    description:
+      'SEO instruction and content planning grounded in usable workflows.',
+    visual: 'dashboard',
   },
   {
+    id: 'customer-resolution',
+    label: 'Service',
     title: 'Customer resolution',
-    body: 'Complaint handling, case follow-up and service quality across digital channels.',
-    className: 'capability capability--tall',
+    description:
+      'Complaint handling, case follow-up and service quality across digital channels.',
+    visual: 'collaboration',
+    colSpan: 2,
+    rowSpan: 2,
   },
   {
+    id: 'hands-on-mentoring',
+    label: 'Teaching',
     title: 'Hands-on mentoring',
-    body: 'Tool-based guidance that connects lessons with real marketing projects.',
-    className: 'capability capability--accent',
+    description:
+      'Tool-based guidance that connects lessons with real marketing projects.',
+    visual: 'automation',
+    colSpan: 2,
+    rowSpan: 2,
+  },
+  {
+    id: 'tooling',
+    label: 'Stack',
+    title: 'Connected tools',
+    description:
+      'Meta Ads, Analytics, Search Console and classroom-ready workflows.',
+    visual: 'integration',
+  },
+  {
+    id: 'quality',
+    label: 'Ops',
+    title: 'Service quality',
+    description:
+      'Clear follow-up, case ownership and professional communication standards.',
+    visual: 'security',
   },
 ]
 
@@ -328,19 +361,6 @@ function App() {
             scrollTrigger: {
               trigger: '.section__heading',
               start: 'top 78%',
-              once: true,
-            },
-          })
-
-          gsap.from('.capability', {
-            autoAlpha: 0,
-            y: 64,
-            duration: 1.1,
-            stagger: 0.11,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: '.capability-grid',
-              start: 'top 80%',
               once: true,
             },
           })
@@ -636,14 +656,22 @@ function App() {
             </p>
           </div>
 
-          <div className="capability-grid" aria-label="Core capabilities">
-            {capabilities.map((capability) => (
-              <article className={capability.className} key={capability.title}>
-                <h3>{capability.title}</h3>
-                <p>{capability.body}</p>
-                <span aria-hidden="true" className="capability__line" />
-              </article>
-            ))}
+          <div className="capability-bento" aria-label="Core capabilities">
+            <MagicBento
+              items={capabilityItems}
+              columns={4}
+              rowHeight={200}
+              gap={12}
+              radius={20}
+              theme="dark"
+              glowColor="#15b8be"
+              enableBorderGlow
+              enableSpotlight
+              spotlightRadius={300}
+              clickEffect
+              textAutoHide
+              intro
+            />
           </div>
         </section>
 
